@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Visualización de la molécula de etanol</title>
+    <!-- Incluir A-Frame -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  </head>
+
+  <body>
+    <!-- Escena A-Frame -->
+    <a-scene>
+      <!-- Texto que dice "ethanol" encima del modelo -->
+      <a-text value="ethanol" color="#FFFFFF" position="0 2 -5" align="center" scale="2 2 2"></a-text>
+
+      <!-- Cargar modelo OBJ con su archivo MTL -->
+      <a-entity id="ethanol-model" obj-model="obj: #ethanol-obj; mtl: #ethanol-mtl" position="0 1.2 -5" scale="0.1 0.1 0.1"></a-entity>
+
+      <!-- Definir los assets (archivos) -->
+      <a-assets>
+        <a-asset-item id="ethanol-obj" src="ethanol.obj"></a-asset-item>
+        <a-asset-item id="ethanol-mtl" src="ethanol.mtl"></a-asset-item>
+      </a-assets>
+
+      <!-- Añadir cámara -->
+      <a-camera position="0 1.6 0"></a-camera>
+
+      <!-- Añadir luces -->
+      <a-light type="ambient" color="#ffffff"></a-light>
+      <a-light type="directional" intensity="0.5" position="1 1 0"></a-light>
+
+      <!-- Lista de propiedades que aparecerá cuando se presione Enter -->
+      <a-text id="info-text" value="Propiedades:" visible="false" color="#FFFFFF" position="2 1.6 -4" align="left" scale="1.5 1.5 1.5"></a-text>
+
+    </a-scene>
+
+    <!-- Script para mostrar el texto cuando se presiona la tecla Enter -->
+    <script>
+      // Espera a que todo el DOM esté cargado
+      document.addEventListener('DOMContentLoaded', () => {
+        // Selecciona el texto
+        const infoText = document.querySelector('#info-text');
+
+        // Añadir evento para detectar la tecla Enter
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') {  // Comprueba si la tecla presionada es "Enter"
+            // Cambia el texto para mostrar las propiedades del etanol
+            infoText.setAttribute('value', 'Propiedades:\n- Fórmula: C2H6O\n- Peso molecular: 46.07 g/mol\n- Punto de ebullición: 78.37°C\n- Estado: Líquido a temperatura ambiente');
+            // Hacer visible el texto
+            infoText.setAttribute('visible', 'true');
+          }
+        });
+      });
+    </script>
+
+  </body>
+</html>
