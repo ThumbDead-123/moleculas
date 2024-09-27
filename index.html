@@ -8,13 +8,13 @@
   </head>
 
   <body>
-    <!-- Escena A-Frame -->
-    <a-scene>
+    <!-- Escena A-Frame con WebXR habilitado -->
+    <a-scene xr="enabled: true" vr-mode-ui="enabled: false">
       <!-- Texto que dice "fructosa" encima del modelo -->
-      <a-text value="fructosa" color="#FFFFFF" position="0 2 -5" align="center" scale="2 2 2"></a-text>
+      <a-text value="fructosa" color="#FFFFFF" position="0 2 -2" align="center" scale="2 2 2"></a-text>
 
       <!-- Cargar modelo OBJ con su archivo MTL -->
-      <a-entity id="fructosa" obj-model="obj: #fructosa-obj; mtl: #fructosa-mtl" position="0 1.2 -5" scale="0.1 0.1 0.1"></a-entity>
+      <a-entity id="fructosa" obj-model="obj: #fructosa-obj; mtl: #fructosa-mtl" position="0 1.2 -2" scale="0.1 0.1 0.1"></a-entity>
 
       <!-- Definir los assets (archivos) -->
       <a-assets>
@@ -28,9 +28,10 @@
         <a-cursor></a-cursor>
       </a-camera>
 
-      <!-- Añadir luces -->
+      <!-- Añadir luces mejoradas -->
       <a-light type="ambient" color="#ffffff"></a-light>
-      <a-light type="directional" intensity="0.5" position="1 1 0"></a-light>
+      <a-light type="directional" intensity="1" position="2 2 -3"></a-light>
+      <a-light type="point" intensity="0.5" position="0 3 0"></a-light>
 
       <!-- Lista de propiedades que aparecerá cuando se presione Enter -->
       <a-text id="info-text" value="Propiedades:" visible="false" color="#FFFFFF" position="2 1.6 -4" align="left" scale="1.5 1.5 1.5"></a-text>
@@ -48,7 +49,7 @@
         // CONFIGURACIÓN: Ajustar fácilmente la velocidad, límite de posición y duración
         const config = {
           speed: 0.02,       // Velocidad de movimiento (menor es más lento)
-          stopPositionZ: -4, // Posición en el eje Z donde se detiene el movimiento
+          stopPositionZ: -1, // Posición en el eje Z donde se detiene el movimiento
           delayBeforeStart: 1000, // Milisegundos antes de iniciar el movimiento
           cameraHeight: 1.6,   // Altura constante de la cámara (para evitar que se mueva hacia abajo)
           rotationSpeed: 1,    // Velocidad de rotación del modelo
