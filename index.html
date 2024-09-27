@@ -48,8 +48,8 @@
 
         // CONFIGURACIÓN: Ajustar fácilmente la velocidad, límite de posición y duración
         const config = {
-          speed: 0.02,       // Velocidad de movimiento (menor es más lento)
-          stopPositionZ: -1, // Posición en el eje Z donde se detiene el movimiento
+          speed: 0.01,       // Velocidad de movimiento (menor es más lento)
+          stopPositionZ: -1.5, // Posición en el eje Z donde se detiene el movimiento
           delayBeforeStart: 1000, // Milisegundos antes de iniciar el movimiento
           cameraHeight: 1.6,   // Altura constante de la cámara (para evitar que se mueva hacia abajo)
           rotationSpeed: 1,    // Velocidad de rotación del modelo
@@ -88,7 +88,7 @@
         // Función para rotar el modelo
         function rotateModel() {
           if (rotating) {
-            let rotation = fructosa.getAttribute('rotation');
+            let rotation = fructosa.getAttribute('rotation') || {x: 0, y: 0, z: 0};
             rotation[currentAxis] += config.rotationSpeed; // Rotar sobre el eje actual
             fructosa.setAttribute('rotation', rotation);
 
