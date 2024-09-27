@@ -23,7 +23,7 @@
       </a-assets>
 
       <!-- Añadir cámara sin controles de teclado -->
-      <a-camera id="camera" position="0 1.6 0" look-controls="pointerLockEnabled: true">
+      <a-camera id="camera" position="0 1.6 0">
         <!-- Añadir cursor para interactuar (opcional) -->
         <a-cursor></a-cursor>
       </a-camera>
@@ -51,7 +51,6 @@
           speed: 0.01,       // Velocidad de movimiento (menor es más lento)
           stopPositionZ: -1.5, // Posición en el eje Z donde se detiene el movimiento
           delayBeforeStart: 1000, // Milisegundos antes de iniciar el movimiento
-          cameraHeight: 1.6,   // Altura constante de la cámara (para evitar que se mueva hacia abajo)
           rotationSpeed: 1,    // Velocidad de rotación del modelo
           axisChangeInterval: 2000 // Tiempo en milisegundos antes de cambiar el eje de rotación
         };
@@ -66,9 +65,6 @@
         // Función para mover la cámara hacia adelante
         function moveForward() {
           let position = camera.getAttribute('position');
-
-          // Asegurarse de mantener la altura de la cámara constante
-          position.y = config.cameraHeight;
 
           // Mover solo si no ha llegado al límite
           if (position.z > config.stopPositionZ) {
