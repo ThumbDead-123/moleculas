@@ -22,8 +22,8 @@
         <a-asset-item id="fructosa-mtl" src="fructosa.mtl"></a-asset-item>
       </a-assets>
 
-      <!-- Añadir cámara sin controles de teclado -->
-      <a-camera id="camera" position="0 1.6 0" look-controls="pointerLockEnabled: true">
+      <!-- Añadir cámara con controles VR, sin controles de teclado -->
+      <a-camera id="camera" position="0 1.6 0" wasd-controls-enabled="false" look-controls="enabled: true">
         <!-- Añadir cursor para interactuar (opcional) -->
         <a-cursor></a-cursor>
       </a-camera>
@@ -34,6 +34,132 @@
 
       <!-- Lista de propiedades que aparecerá cuando se presione Enter -->
       <a-text id="info-text" value="Propiedades:" visible="false" color="#FFFFFF" position="2 1.6 -4" align="left" scale="1.5 1.5 1.5"></a-text>
+
+      <!-- Activar modo VR automáticamente (opcional) -->
+      <a-entity id="vr-mode" vr-mode-ui="enabled: true"></a-entity>
+
+    </a-scene>
+
+    <!-- Script para hacer que la cámara se mueva automáticamente y se detenga -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Selecciona el texto, la cámara y el modelo
+        const infoText = document.querySelector('#info-text');
+        const camera = document.querySelector('#camera');
+        const fructosa = document.querySelector('#fructosa');
+
+        // CONFIGURACIÓN: Ajustar fácilmente la velocidad, límite de posición y duración
+        const config = {
+          speed: 0.02,       // Velocidad de movimiento (menor es más lento)
+          stopPositionZ: -4, // Posición en el eje Z donde se detiene el movimiento
+          delayBeforeStart: 1000, // Milisegundos antes de iniciar el movimiento
+          cameraHeight: 1.6,   // Altura constante de la cámara (para evitar que se mueva hacia abajo)
+          rotationSpeed: 1,    // Velocidad de rotación del modelo
+          axisChangeInterval: 2000 // Tiempo en milisegundos antes de cambiar el eje de rotación
+        };
+
+        // Variable para controlar si la rotación está activa
+        let rotating = false;
+
+        // Ejes de rotación disponibles
+        const rotationAxes = ['x', 'y', 'z'];
+        let currentAxis = 'y'; // Iniciar con el eje Y
+
+        // Función para mover la cámara hacia adelante
+        function moveForward() {
+          let position = camera.getAttribute('position');
+
+          // Asegurarse de mantener la altura de la cámara constante
+          position.y = config.cameraHeight;
+
+          // Mover solo si no ha llegado al límite
+          if (position.z > config.stopPositionZ) {
+            position.z -= config.speed; // Mueve hacia adelante en el eje Z
+            camera.setAttribute('position', position);
+            
+            // Seguir moviendo en el siguiente frame para suavidad
+            requestAnimationFrame(moveForward);
+          } else {
+            // Iniciar la rotación cuando se detenga el movimiento
+            rotating = true;
+            rotateModel();
+            setInterval(changeRotationAxis, config.axisChangeInterval); // Cambiar de eje cada cierto tiempo
+          }
+        }
+
+        // Función para rotar el modelo
+        function rotateModel() {
+          if (rotating) {
+            let rotation = fructosa.getAttribute('rotation');
+            rotation[currentAxis] += config.rotationSpeed; // Rotar sobre el eje actual
+            fructosa.setAttribute('rotation', rotation);
+
+            // Seguir rotando en el siguiente frame
+            requestAnimationFrame(rotateModel);
+          }
+        }
+
+        // Función para cambiar el eje de rotación
+        function changeRotationAxis() {
+          // Cambiar al siguiente eje en la lista de ejes
+          const currentIndex = rotationAxes.indexOf(currentAxis);
+          currentAxis = rotationAxes[(currentIndex + 1) % rotationAxes.length];
+        }
+
+        // Iniciar el movimiento después de un retraso configurado
+        setTimeout(moveForward, config.delayBeforeStart);
+
+        // Añadir evento para detectar la tecla Enter y mostrar la fórmula de la fructosa
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') {  
+            infoText.setAttribute('value', 'C6H12O6');
+            infoText.setAttribute('visible', 'true');
+          }
+        });
+      });
+    </script>
+
+  </body>
+</html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Visualización de la molécula de fructosa</title>
+    <!-- Incluir A-Frame -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  </head>
+
+  <body>
+    <!-- Escena A-Frame -->
+    <a-scene>
+      <!-- Texto que dice "fructosa" encima del modelo -->
+      <a-text value="fructosa" color="#FFFFFF" position="0 2 -5" align="center" scale="2 2 2"></a-text>
+
+      <!-- Cargar modelo OBJ con su archivo MTL -->
+      <a-entity id="fructosa" obj-model="obj: #fructosa-obj; mtl: #fructosa-mtl" position="0 1.2 -5" scale="0.1 0.1 0.1"></a-entity>
+
+      <!-- Definir los assets (archivos) -->
+      <a-assets>
+        <a-asset-item id="fructosa-obj" src="fructosa.obj"></a-asset-item>
+        <a-asset-item id="fructosa-mtl" src="fructosa.mtl"></a-asset-item>
+      </a-assets>
+
+      <!-- Añadir cámara con controles VR, sin controles de teclado -->
+      <a-camera id="camera" position="0 1.6 0" wasd-controls-enabled="false" look-controls="enabled: true">
+        <!-- Añadir cursor para interactuar (opcional) -->
+        <a-cursor></a-cursor>
+      </a-camera>
+
+      <!-- Añadir luces -->
+      <a-light type="ambient" color="#ffffff"></a-light>
+      <a-light type="directional" intensity="0.5" position="1 1 0"></a-light>
+
+      <!-- Lista de propiedades que aparecerá cuando se presione Enter -->
+      <a-text id="info-text" value="Propiedades:" visible="false" color="#FFFFFF" position="2 1.6 -4" align="left" scale="1.5 1.5 1.5"></a-text>
+
+      <!-- Activar modo VR automáticamente (opcional) -->
+      <a-entity id="vr-mode" vr-mode-ui="enabled: true"></a-entity>
 
     </a-scene>
 
