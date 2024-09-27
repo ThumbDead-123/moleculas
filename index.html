@@ -22,8 +22,8 @@
         <a-asset-item id="fructosa-mtl" src="fructosa.mtl"></a-asset-item>
       </a-assets>
 
-      <!-- Añadir cámara sin controles de teclado -->
-      <a-camera id="camera" position="0 1.6 0">
+      <!-- Añadir cámara con controles de orientación del dispositivo (RA) -->
+      <a-camera id="camera" position="0 1.6 0" look-controls="enabled: false" device-orientation-permission-ui="enabled: true" wasd-controls-enabled="false">
         <!-- Añadir cursor para interactuar (opcional) -->
         <a-cursor></a-cursor>
       </a-camera>
