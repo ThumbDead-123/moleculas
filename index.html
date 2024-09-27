@@ -36,8 +36,8 @@
 
     <script>
         // Variables para el movimiento
-        let lastBeta = 0; // Ángulo de inclinación anterior (beta)
-        let stepThreshold = 10; // Umbral para detectar el movimiento
+        let lastBeta = null; // Ángulo de inclinación anterior (beta)
+        let stepThreshold = 5; // Umbral para detectar el movimiento
         let movingForward = false; // Indica si se está moviendo hacia adelante
 
         // Función para mover la cámara hacia adelante
@@ -49,11 +49,19 @@
                 y: currentPosition.y,
                 z: currentPosition.z - steps * 0.1 // Ajusta este valor para cambiar la distancia por paso
             });
+            console.log("Moved forward: ", currentPosition.z - steps * 0.1); // Mensaje de depuración
         }
 
         // Escucha los cambios en la orientación del dispositivo
         window.addEventListener('deviceorientation', (event) => {
             const beta = event.beta; // Inclinación hacia arriba/abajo
+            console.log("Current beta: ", beta); // Mensaje de depuración
+
+            // Inicializa lastBeta
+            if (lastBeta === null) {
+                lastBeta = beta;
+                return;
+            }
 
             // Detecta si la cámara se mueve hacia abajo y luego hacia arriba
             if (beta < lastBeta - stepThreshold && !movingForward) {
