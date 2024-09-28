@@ -1,40 +1,35 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movimiento con Pasos en AR</title>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Visualización de Fructosa en VR</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://aframe.io/releases/1.2.0/aframe-ar.js"></script>
-</head>
-<body>
-    <a-scene embedded arjs>
-        <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
-        <a-sky color="#ECECEC"></a-sky>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-obj-model/master/dist/aframe-obj-model.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- Agregar una luz para iluminar el modelo -->
+      <a-light type="ambient" color="#FFF"></a-light>
+      <a-light type="directional" position="-1 1 1" intensity="0.5"></a-light>
 
-        <!-- Aquí agregarías tu modelo y otros elementos -->
+      <!-- Cargar el modelo OBJ con su material MTL -->
+      <a-entity 
+        obj-model="obj: #fructosa; mtl: #fructosa-mtl" 
+        position="0 1.6 -3" 
+        scale="0.1 0.1 0.1">
+      </a-entity>
+
+      <!-- Definir el modelo OBJ y MTL -->
+      <a-assets>
+        <a-asset-item id="fructosa" src="fructosa.obj"></a-asset-item>
+        <a-asset-item id="fructosa-mtl" src="fructosa.mtl"></a-asset-item>
+      </a-assets>
+
+      <!-- Cámara para la vista VR -->
+      <a-entity camera look-controls position="0 1.6 0"></a-entity>
+      
+      <!-- Entidad para el entorno -->
+      <a-sky color="#ECECEC"></a-sky>
     </a-scene>
-
-    <script>
-        // Suponiendo que tienes acceso a un método para obtener pasos
-        let stepCount = 0; // Inicializar el contador de pasos
-
-        // Función para mover la cámara hacia adelante
-        function moveCameraForward(steps) {
-            const camera = document.getElementById('camera');
-            const currentPosition = camera.getAttribute('position');
-            camera.setAttribute('position', {
-                x: currentPosition.x,
-                y: currentPosition.y,
-                z: currentPosition.z - steps * 0.1 // Ajusta el valor según tu escala
-            });
-        }
-
-        // Simulación de la detección de pasos
-        setInterval(() => {
-            stepCount++; // Incrementar el contador de pasos para la simulación
-            moveCameraForward(1); // Mover la cámara hacia adelante por un paso
-        }, 1000); // Simula un paso cada segundo (para prueba)
-    </script>
-</body>
+  </body>
 </html>
