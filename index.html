@@ -7,7 +7,6 @@
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccaslin/aframe-obj-loader/master/dist/aframe-obj-loader.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccaslin/aframe-mtl-loader/master/dist/aframe-mtl-loader.min.js"></script>
-    <script src="https://unpkg.com/aframe-teleport@latest/dist/teleport.js"></script>
     <style>
         body { margin: 0; }
         a-scene { height: 100vh; }
@@ -49,7 +48,7 @@
                 y: currentPosition.y,
                 z: currentPosition.z - steps * 0.1 // Ajusta este valor para cambiar la distancia por paso
             });
-            console.log("Moved forward: ", currentPosition.z - steps * 0.1); // Mensaje de depuración
+            console.log("Moved forward to Z position: ", currentPosition.z - steps * 0.1); // Mensaje de depuración
         }
 
         // Escucha los cambios en la orientación del dispositivo
@@ -64,7 +63,7 @@
             }
 
             // Detecta si la cámara se mueve hacia abajo y luego hacia arriba
-            if (beta < lastBeta - stepThreshold && !movingForward) {
+            if (beta < lastBeta - stepThreshold) {
                 movingForward = true; // Se inicia el movimiento
             } else if (beta > lastBeta + stepThreshold && movingForward) {
                 moveCameraForward(1); // Mueve la cámara hacia adelante
