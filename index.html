@@ -3,41 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelo Fructosa en VR</title>
+    <title>Movimiento con Pasos en AR</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/donmccaslin/aframe-obj-loader/master/dist/aframe-obj-loader.min.js"></script>
-    <script src="https://cdn.rawgit.com/donmccaslin/aframe-mtl-loader/master/dist/aframe-mtl-loader.min.js"></script>
-    <style>
-        body { margin: 0; }
-        a-scene { height: 100vh; }
-    </style>
+    <script src="https://aframe.io/releases/1.2.0/aframe-ar.js"></script>
 </head>
 <body>
-    <a-scene>
-        <!-- Cámara -->
+    <a-scene embedded arjs>
         <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
-
-        <!-- Luces -->
-        <a-light type="ambient" color="#FFF" intensity="0.5"></a-light>
-        <a-light type="directional" color="#FFF" position="-1 1 1" intensity="0.5"></a-light>
-
-        <!-- Carga del modelo OBJ con MTL -->
-        <a-entity 
-            obj-model="obj: url(fructosa.obj); mtl: url(fructosa.mtl)" 
-            position="0 0 -5" 
-            rotation="0 180 0" 
-            scale="0.1 0.1 0.1">
-        </a-entity>
-
-        <!-- Fondo -->
         <a-sky color="#ECECEC"></a-sky>
+
+        <!-- Aquí agregarías tu modelo y otros elementos -->
     </a-scene>
 
     <script>
-        // Variables para el movimiento
-        let lastBeta = null; // Ángulo de inclinación anterior (beta)
-        let stepThreshold = 5; // Umbral para detectar el movimiento
-        let movingForward = false; // Indica si se está moviendo hacia adelante
+        // Suponiendo que tienes acceso a un método para obtener pasos
+        let stepCount = 0; // Inicializar el contador de pasos
 
         // Función para mover la cámara hacia adelante
         function moveCameraForward(steps) {
@@ -46,32 +26,15 @@
             camera.setAttribute('position', {
                 x: currentPosition.x,
                 y: currentPosition.y,
-                z: currentPosition.z - steps * 0.1 // Ajusta este valor para cambiar la distancia por paso
+                z: currentPosition.z - steps * 0.1 // Ajusta el valor según tu escala
             });
-            console.log("Moved forward to Z position: ", currentPosition.z - steps * 0.1); // Mensaje de depuración
         }
 
-        // Escucha los cambios en la orientación del dispositivo
-        window.addEventListener('deviceorientation', (event) => {
-            const beta = event.beta; // Inclinación hacia arriba/abajo
-            console.log("Current beta: ", beta); // Mensaje de depuración
-
-            // Inicializa lastBeta
-            if (lastBeta === null) {
-                lastBeta = beta;
-                return;
-            }
-
-            // Detecta si la cámara se mueve hacia abajo y luego hacia arriba
-            if (beta < lastBeta - stepThreshold) {
-                movingForward = true; // Se inicia el movimiento
-            } else if (beta > lastBeta + stepThreshold && movingForward) {
-                moveCameraForward(1); // Mueve la cámara hacia adelante
-                movingForward = false; // Resetea el estado
-            }
-
-            lastBeta = beta; // Actualiza la inclinación anterior
-        });
+        // Simulación de la detección de pasos
+        setInterval(() => {
+            stepCount++; // Incrementar el contador de pasos para la simulación
+            moveCameraForward(1); // Mover la cámara hacia adelante por un paso
+        }, 1000); // Simula un paso cada segundo (para prueba)
     </script>
 </body>
 </html>
